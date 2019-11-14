@@ -2,11 +2,11 @@ package server
 
 import (
 	"context"
-	"fmt"
-	"net"
-
+	"environment/dump"
 	"environment/logger"
+	"fmt"
 	"mmapcache/cache"
+	"net"
 	pb "svrdemo/proto"
 
 	"github.com/golang/protobuf/proto"
@@ -49,6 +49,11 @@ func (s *Server) Run(addr string) error {
 
 // SayHello implements proto.
 func (s *Server) SayHello(ctx context.Context, req *pb.SimpleHello) (*pb.SimpleHelloReply, error) {
+	// 网络事件处理计数器，dump会通过配置将当前服务的网络事件吞吐量提交给监控服务
+	dump.NetEventRecvIncr(0)
+	defer dump.NetEventRecvDecr(0)
+
+	// 构建回包 & 处理业务
 	reply := &pb.SimpleHelloReply{
 		Transid: req.Transid,
 		Name:    req.Name,

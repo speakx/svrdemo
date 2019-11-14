@@ -9,3 +9,6 @@ cache:
   mmapsize: 0x100000
   datasize: 0x2000
   prealloc: 100
+dump:
+  invertal: 5
+  addr: 

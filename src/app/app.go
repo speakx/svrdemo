@@ -1,12 +1,13 @@
 package app
 
 import (
-	"sync"
-
 	"environment/cfgargs"
+	"environment/dump"
 	"environment/logger"
+	"fmt"
 	"mmapcache/cache"
 	pb "svrdemo/proto"
+	"sync"
 
 	"github.com/golang/protobuf/proto"
 )
@@ -47,6 +48,12 @@ func (a *App) InitApp(srvCfg *cfgargs.SrvConfig) {
 	logger.Info("start init client")
 	a.initClientSrv()
 	logger.Info("end init client")
+
+	// 初始化dump包，用来做服务端健康度检查&汇报
+	dump.InitDump(true, srvCfg.Dump.Interval, srvCfg.Dump.Addr,
+		func(recv int64, send int64, recvHandleRate int64, sendHandleRate int64) {
+			fmt.Println(sendHandleRate)
+		})
 }
 
 func (a *App) errorMMapCache(err error) {
