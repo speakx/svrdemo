@@ -18,12 +18,6 @@ targetos=$1
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 repository=${PWD##*/}
-echo "publish environment..."
-cd ../environment
-sh ./publish.sh
-cd ../$repository
-echo
-
 # 重新造一遍 go mod
 sh ./shell/gen-proto.sh
 sh ./shell/configure.sh

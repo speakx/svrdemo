@@ -2,13 +2,13 @@ package app
 
 import (
 	"environment/srvinstance"
-	pb "svrdemo/proto"
+	"svrdemo/proto/pbsvrdemo"
 )
 
 // SimpleGrpcClient simpeclient
 type SimpleGrpcClient struct {
 	srvinstance.GrpcClient
-	pb.SimpleServerClient
+	pbsvrdemo.SimpleServerClient
 }
 
 // Connect connect
@@ -18,6 +18,6 @@ func (s *SimpleGrpcClient) Connect(addr string) error {
 		return err
 	}
 
-	s.SimpleServerClient = pb.NewSimpleServerClient(s.GetConn())
+	s.SimpleServerClient = pbsvrdemo.NewSimpleServerClient(s.GetConn())
 	return nil
 }
