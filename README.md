@@ -7,6 +7,9 @@
 将 go 打包编译，可通过传入不同的参数编译出对应的平台版本  
 默认关闭了C++依赖编译，如何工程里有C++混合编译，需要手动打开`CGO_ENABLED=1`  
 
+### rename.sh
+通过此脚本将Demo工程方便的完整重命名为其他项目名称（修改go的import、修改根目录名称、修改go mod文件）
+
 ## 其他脚本
 ### ./shell/(configure.sh、gen-proto.sh)
 configure.sh 自动引入pkg目录下和当前工程同级目录下，所有包含go.mod的工程  

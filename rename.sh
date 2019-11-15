@@ -11,23 +11,41 @@ echo "項目名重命名 $oldrepository -> $repository"
 
 # 1, 修改go代码中的所有当前mod的引用
 function rename_go() {
-	folders=`ls`
-    for folder in ${folders[@]};do
-		if [ -d "$(pwd)/$folder" ] ;then
-            cd ./$folder
+	files=`ls`
+    for file in ${files[@]};do
+		if [ -d "$(pwd)/$file" ] ;then
+            cd ./$file
             rename_go
             cd ../
         else
-            if [[ $folder == *.go ]] ;then
-                if [[ `cat $(pwd)/$folder | grep "\"$oldrepository"` != "" ]]; then
-                    echo "sed 's/$oldrepository/$repository/g' $(pwd)/$folder"
-                    sed 's/$oldrepository/$repository/g' $(pwd)/$folder >> $(pwd)/$folder.tmp
+            if [[ $file == *.go ]] ;then
+                if [[ `cat $(pwd)/$file | grep "\"$oldrepository/"` != "" ]]; then
+                    rm -rf $file.tmp
+                    sed "s/\"$oldrepository\//\"$repository\//g" $file >> $file.tmp
+                    rm -rf $file
+                    mv $file.tmp $file
+                fi
+
+                if [[ `cat $(pwd)/$file | grep "pb$oldrepository"` != "" ]]; then
+                    rm -rf $file.tmp
+                    sed "s/pb$oldrepository/pb$repository/g" $file >> $file.tmp
+                    rm -rf $file
+                    mv $file.tmp $file
                 fi
             fi
         fi
 	done
 }
 
+# step1 重命名import
 cd ./src
     rename_go
 cd ../
+
+# step2 重命名文件夹
+cd ../
+mv $oldrepository $repository
+
+# step3 go验证一下
+cd $repository
+sh go.sh
