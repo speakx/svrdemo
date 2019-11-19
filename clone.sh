@@ -7,12 +7,19 @@ if [ "$repository" = "" ] ;then
     echo "没有输入新的項目名"
     exit
 fi
-echo "項目名重命名 $oldrepository -> $repository"
+echo "克隆 $oldrepository -> $repository"
 
-# 1, 修改go代码中的所有当前mod的引用
+check=`ls ../ | grep $repository`
+if [ "$check" == "" ] ;then
+    echo "项目 $repository 目录不存在"
+    cd ../
+    echo $(pwd)"/"$repository
+    exit
+fi
+
 function rename_go() {
 	files=`ls`
-    for file in ${files[@]};do
+    for file in ${files[@]}; do
 		if [ -d "$(pwd)/$file" ] ;then
             cd ./$file
             rename_go
@@ -37,15 +44,19 @@ function rename_go() {
 	done
 }
 
-# step1 重命名import
+# step1 复制所有文件
+srcs=`ls`
+for src in ${srcs[@]}; do
+    if [ "$src" != ".git" ] ;then
+        cp -R ./$src ../$repository/$src
+    fi
+done
+cd ../$repository
+
+# step2 重命名import
 cd ./src
     rename_go
 cd ../
 
-# step2 重命名文件夹
-cd ../
-mv $oldrepository $repository
-
 # step3 go验证一下
-cd $repository
 sh go.sh
