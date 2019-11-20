@@ -10,6 +10,8 @@ replace mmapcache => ../../mmapcache/src
 
 replace single => ../../single/src
 
+replace singledb => ../../singledb/src
+
 require (
 	environment v0.0.0-00010101000000-000000000000
 	github.com/golang/protobuf v1.3.2

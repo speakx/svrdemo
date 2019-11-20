@@ -1,5 +1,7 @@
-addr: :10000
-name: svrdemo
+info:
+  addr: :10000
+  name: svrdemo
+  id:
 log:
   path: 
   console: true
