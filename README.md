@@ -9,6 +9,7 @@
 
 ### clone.sh
 通过此脚本将Demo工程方便的完整复制为其他项目名称（修改go的import、修改根目录名称、修改go mod文件）
+步骤：拷贝 ./svrdemo/ 下所有的文件 & 文件夹到新工程目录，运行脚本 sh clone.sh [新工程名称]
 
 ## 其他脚本
 ### ./shell/(configure.sh、gen-proto.sh)

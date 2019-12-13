@@ -1,11 +1,17 @@
 #!/bin/bash
 
-# 通过此脚本直接将 go-simple 重命名为自己的服务工程
+# 通过此脚本直接将 svrdemo 重命名为自己的服务工程
 repository=$1
+currepository=${PWD##*/}
 oldrepository=${PWD##*/}
 if [ "$repository" = "" ] ;then
     echo "没有输入新的項目名"
     exit
+fi
+
+# 拷贝的是Demo代码，需要直接改动
+if [ "$repository" = "$oldrepository" ] ;then
+    oldrepository="svrdemo"
 fi
 echo "克隆 $oldrepository -> $repository"
 
@@ -45,13 +51,15 @@ function rename_go() {
 }
 
 # step1 复制所有文件
-srcs=`ls`
-for src in ${srcs[@]}; do
-    if [ "$src" != ".git" ] ;then
-        cp -R ./$src ../$repository/$src
-    fi
-done
-cd ../$repository
+if [ "$repository" != "$currepository" ] ;then
+    srcs=`ls`
+    for src in ${srcs[@]}; do
+        if [ "$src" != ".git" ] ;then
+            cp -R ./$src ../$repository/$src
+        fi
+    done
+    cd ../$repository
+fi
 
 # step2 重命名import
 cd ./src
